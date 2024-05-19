@@ -9,13 +9,20 @@ import {
 import styled from "styled-components";
 import Price from "./Price";
 import Chart from "./Chart";
-import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import { fetchCoinInfo } from "../api";
 import { useQuery } from "react-query";
 import { Helmet } from "react-helmet-async";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
 
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
+  display: flex;
+  align-items: center;
+  a {
+    font-size: 32px;
+  }
 `;
 
 const Loader = styled.span`
@@ -88,58 +95,18 @@ interface RouteState {
   name: string;
 }
 
-interface InfoData {
+export interface InfoData {
   id: string;
-  name: string;
   symbol: string;
-  rank: number;
-  is_new: boolean;
-  is_active: boolean;
-  type: string;
-  logo: string;
-  description: string;
-  message: string;
-  open_source: boolean;
-  started_at: string;
-  development_status: string;
-  hardware_wallet: boolean;
-  proof_type: string;
-  org_structure: string;
-  hash_algorithm: string;
-  first_data_at: string;
-  last_data_at: string;
-}
-
-interface PriceData {
-  id: string;
   name: string;
-  symbol: string;
-  rank: number;
-  total_supply: number;
-  max_supply: number;
-  beta_value: number;
-  first_data_at: string;
-  last_updated: string;
-  quotes: {
-    USD: {
-      ath_date: string;
-      ath_price: number;
-      market_cap: number;
-      market_cap_change_24h: number;
-      percent_change_1h: number;
-      percent_change_1y: number;
-      percent_change_6h: number;
-      percent_change_7d: number;
-      percent_change_12h: number;
-      percent_change_15m: number;
-      percent_change_24h: number;
-      percent_change_30d: number;
-      percent_change_30m: number;
-      percent_from_price_ath: number;
-      price: number;
-      volume_24h: number;
-      volume_24h_change_24h: number;
-    };
+  description: { en: string | null };
+  market_cap_rank: number;
+  market_data: {
+    current_price: { usd: number };
+    total_supply: number;
+    max_supply: number;
+    high_24h: { usd: number };
+    low_24h: { usd: number };
   };
 }
 
@@ -148,16 +115,8 @@ function Coin() {
   const { state } = useLocation<RouteState>();
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
-  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
-    ["info", coinId],
-    () => fetchCoinInfo(coinId)
-  );
-  const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
-    ["tickers", coinId],
-    () => fetchCoinTickers(coinId),
-    {
-      refetchInterval: 5000,
-    }
+  const { isLoading, data } = useQuery<InfoData>(["info", coinId], () =>
+    fetchCoinInfo(coinId)
   );
   /*   const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState<InfoData>();
@@ -175,46 +134,48 @@ function Coin() {
       setLoading(false);
     })();
   }, [coinId]); */
-  const loading = infoLoading || tickersLoading;
   return (
     <Container>
       <Helmet>
         <title>
-          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+          {state?.name ? state.name : isLoading ? "Loading..." : data?.name}
         </title>
       </Helmet>
       <Header>
         <Title>
-          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+          <Link to={"/"}>
+            <FontAwesomeIcon icon={faHouse} />
+          </Link>
+          {state?.name ? state.name : isLoading ? "Loading..." : data?.name}
         </Title>
       </Header>
-      {loading ? (
+      {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
           <Overview>
             <OverviewItem>
               <span>Rank:</span>
-              <span>{infoData?.rank}</span>
+              <span>{data?.market_cap_rank}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Symbol:</span>
-              <span>${infoData?.symbol}</span>
+              <span>${data?.symbol.toUpperCase()}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Price:</span>
-              <span>${tickersData?.quotes.USD.price.toFixed(2)}</span>
+              <span>${data?.market_data.current_price.usd.toFixed(2)}</span>
             </OverviewItem>
           </Overview>
-          <Description>{infoData?.description}</Description>
+          <Description>{data?.description.en?.slice(0, 200)}...</Description>
           <Overview>
             <OverviewItem>
               <span>Total Supply:</span>
-              <span>{tickersData?.total_supply}</span>
+              <span>{data?.market_data.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Max Supply:</span>
-              <span>{tickersData?.max_supply}</span>
+              <span>{data?.market_data.max_supply}</span>
             </OverviewItem>
           </Overview>
 
@@ -229,7 +190,7 @@ function Coin() {
 
           <Switch>
             <Route path={`/:coinId/price`}>
-              <Price />
+              <Price data={data} />
             </Route>
             <Route path={`/:coinId/chart`}>
               <Chart coinId={coinId} />
