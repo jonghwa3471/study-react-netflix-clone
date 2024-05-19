@@ -4,9 +4,10 @@ import ApexChart from "react-apexcharts";
 
 interface ChartProps {
   coinId: string;
+  isDark: boolean;
 }
 
-function Chart({ coinId }: ChartProps) {
+function Chart({ coinId, isDark }: ChartProps) {
   const { isLoading, data: historicalData } = useQuery<number[][]>(
     ["ohlcv", coinId],
     () => fetchCoinHistory(coinId)
@@ -17,7 +18,7 @@ function Chart({ coinId }: ChartProps) {
         "Loading chart..."
       ) : (
         <ApexChart
-          type="candlestick"
+          type="line"
           series={[
             {
               name: "Price",
@@ -26,10 +27,10 @@ function Chart({ coinId }: ChartProps) {
           ]}
           options={{
             theme: {
-              mode: "dark",
+              mode: isDark ? "dark" : "light",
             },
             chart: {
-              height: 500,
+              height: 300,
               width: 500,
               toolbar: {
                 show: false,
@@ -38,6 +39,10 @@ function Chart({ coinId }: ChartProps) {
             },
             grid: {
               show: false,
+            },
+            stroke: {
+              curve: "smooth",
+              width: 4,
             },
             yaxis: {
               show: false,

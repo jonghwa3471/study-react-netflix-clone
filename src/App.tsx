@@ -86,9 +86,8 @@ function App() {
             rel="stylesheet"
           />
         </Helmet>
-        <button onClick={toggleDark}>Toggle</button>
         <GlobalStyle />
-        <Router />
+        <Router isDark={isDark} toggleDark={toggleDark} />
         <ReactQueryDevtools initialIsOpen={true} />
       </ThemeProvider>
     </>
