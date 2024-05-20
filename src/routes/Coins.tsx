@@ -83,11 +83,9 @@ interface ICoin {
   last_updated: string;
 }
 
-interface ICoinsProps {
-  toggleDark: () => void;
-}
+interface ICoinsProps {}
 
-function Coins({ toggleDark }: ICoinsProps) {
+function Coins({}: ICoinsProps) {
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
   return (
     <Container>
@@ -96,7 +94,6 @@ function Coins({ toggleDark }: ICoinsProps) {
       </Helmet>
       <Header>
         <Title>Coin</Title>
-        <button onClick={toggleDark}>Toggle Dark Mode</button>
       </Header>
       {isLoading ? (
         <Loader>Loading...</Loader>
