@@ -117,8 +117,10 @@ function Coin({}: ICoinProps) {
   const { state } = useLocation<RouteState>();
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
-  const { isLoading, data } = useQuery<InfoData>(["info", coinId], () =>
-    fetchCoinInfo(coinId)
+  const { isLoading, data } = useQuery<InfoData>(
+    ["info", coinId],
+    () => fetchCoinInfo(coinId),
+    { refetchInterval: 5000 }
   );
   /*   const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState<InfoData>();
