@@ -2,7 +2,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { Categories, categoryState, toDoSelector } from "../atoms";
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
-import React from "react";
 
 function ToDoList() {
   const toDos = useRecoilValue(toDoSelector);
@@ -10,7 +9,6 @@ function ToDoList() {
   const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
     setCategory(event.currentTarget.value as any);
   };
-  console.log(toDos);
   return (
     <div>
       <h1>To Dos</h1>

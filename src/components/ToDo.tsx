@@ -1,5 +1,6 @@
 import { useSetRecoilState } from "recoil";
 import { Categories, IToDo, toDoState } from "../atoms";
+import React from "react";
 
 function ToDo({ text, category, id }: IToDo) {
   const setToDos = useSetRecoilState(toDoState);
@@ -17,9 +18,12 @@ function ToDo({ text, category, id }: IToDo) {
       ];
     });
   };
+  const deleteToDo = () => {
+    setToDos((oldToDos) => oldToDos.filter((toDo) => toDo.id !== id));
+  };
   return (
     <li>
-      <span>{text}</span>
+      <span>{text} &nbsp;</span>
       {category !== Categories.DOING && (
         <button name={Categories.DOING} onClick={onClick}>
           Doing
@@ -35,6 +39,7 @@ function ToDo({ text, category, id }: IToDo) {
           Done
         </button>
       )}
+      <button onClick={deleteToDo}>❌</button>
     </li>
   );
 }
