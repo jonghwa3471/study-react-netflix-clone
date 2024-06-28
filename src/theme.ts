@@ -1,4 +1,4 @@
-import { DefaultTheme } from "styled-components/dist/types";
+import { DefaultTheme } from "styled-components";
 
 export const darkTheme: DefaultTheme = {
   bgColor: "#3F8CF2",
