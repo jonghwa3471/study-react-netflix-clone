@@ -4,7 +4,6 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
   width: 300px;
-  padding: 20px 10px;
   padding-top: 10px;
   background-color: ${(props) => props.theme.boardColor};
   border-radius: 5px;
@@ -28,12 +27,13 @@ interface IAreaProps {
 const Area = styled.div<IAreaProps>`
   background-color: ${(props) =>
     props.$isDraggingOver
-      ? "pink"
+      ? "#2d3436"
       : props.$isDraggingFromThis
-      ? "red"
-      : "blue"};
+      ? "#636e72"
+      : "transparent"};
   flex-grow: 1;
   transition: background-color 0.3s ease-in-out;
+  padding: 20px;
 `;
 interface IBoardProps {
   toDos: string[];
