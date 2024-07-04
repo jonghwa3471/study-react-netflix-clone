@@ -1,8 +1,16 @@
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { toDoState } from "./atoms";
+import { boardMoalState, toDoState } from "./atoms";
 import Board from "./components/Board";
+import AddBoardButton from "./components/AddBoardButton";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import { far } from "@fortawesome/free-regular-svg-icons";
+import BoardModal from "./components/BoardModal";
+
+library.add(fas, fab, far);
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,9 +32,10 @@ const Boards = styled.div`
 
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
+  const boardModalState = useRecoilValue(boardMoalState);
   const onDragEnd = (info: DropResult) => {
     console.log(info);
-    const { destination, draggableId, source } = info;
+    const { destination, source } = info;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
       // same board movement.
@@ -58,15 +67,19 @@ function App() {
     }
   };
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Wrapper>
-        <Boards>
-          {Object.keys(toDos).map((boardId) => (
-            <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
-          ))}
-        </Boards>
-      </Wrapper>
-    </DragDropContext>
+    <>
+      <AddBoardButton />
+      {boardModalState ? <BoardModal /> : null}
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Wrapper>
+          <Boards>
+            {Object.keys(toDos).map((boardId) => (
+              <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
+            ))}
+          </Boards>
+        </Wrapper>
+      </DragDropContext>
+    </>
   );
 }
 

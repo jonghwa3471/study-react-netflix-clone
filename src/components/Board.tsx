@@ -2,12 +2,12 @@ import { Droppable } from "react-beautiful-dnd";
 import DraggableCard from "./DraggableCard";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { IToDo, toDoState } from "../atoms";
+import { IToDo, TRELLO_TODO, toDoState } from "../atoms";
 import { useSetRecoilState } from "recoil";
 
 const Wrapper = styled.div`
-  width: 300px;
-  padding-top: 10px;
+  width: 330px;
+  padding: 20px 5px;
   background-color: ${(props) => props.theme.boardColor};
   border-radius: 5px;
   min-height: 300px;
@@ -36,13 +36,18 @@ const Area = styled.div<IAreaProps>`
       : "transparent"};
   flex-grow: 1;
   transition: background-color 0.3s ease-in-out;
-  padding: 20px;
+  padding: 10px 20px;
 `;
 
 const Form = styled.form`
   width: 100%;
+  padding: 10px 20px;
   input {
     width: 100%;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding: 20px 10px;
+    border: none;
   }
 `;
 interface IBoardProps {
@@ -69,6 +74,7 @@ function Board({ toDos, boardId }: IBoardProps) {
       };
     });
     setValue("toDo", "");
+    localStorage.setItem(TRELLO_TODO, JSON.stringify(toDos));
   };
   return (
     <Wrapper>
@@ -77,7 +83,7 @@ function Board({ toDos, boardId }: IBoardProps) {
         <input
           {...register("toDo", { required: true })}
           type="text"
-          placeholder={`Add task on ${boardId}`}
+          placeholder="할 일을 추가하세요."
         />
       </Form>
       <Droppable droppableId={boardId}>

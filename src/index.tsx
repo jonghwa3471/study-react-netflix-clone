@@ -66,10 +66,13 @@ table {
 }
 body {
   font-weight: 300;
-  font-family: "Source Sans 3", sans-serif;
-  background-color: ${(props) => props.theme.bgColor};
+  font-family: 'Stylish', sans-serif;
+  background-image: radial-gradient(circle at 10% 10%, rgb(104, 220, 242) 0%, rgb(179, 201, 241) 80%);
   color: black;
   line-height: 1.2;
+  input:focus {
+    outline: none;
+  }
 }
 a {
   text-decoration: none;
