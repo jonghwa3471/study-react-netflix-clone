@@ -67,7 +67,7 @@ table {
 body {
   font-weight: 300;
   font-family: 'Stylish', sans-serif;
-  background-image: radial-gradient(circle at 10% 10%, rgb(104, 220, 242) 0%, rgb(179, 201, 241) 80%);
+  background-image: radial-gradient(circle at 10% 10%, rgb(255, 156, 156) 0%, rgb(179, 201, 241) 80%);
   color: black;
   line-height: 1.2;
   input:focus {

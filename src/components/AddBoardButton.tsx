@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useSetRecoilState } from "recoil";
-import { boardMoalState } from "../atoms";
+import { boardModalState } from "../atoms";
 
 const Button = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ const Button = styled.div`
 `;
 
 function AddBoardButton() {
-  const setModalState = useSetRecoilState(boardMoalState);
+  const setModalState = useSetRecoilState(boardModalState);
   const onButtonClick = () => {
     setModalState((currVal) => !currVal);
   };

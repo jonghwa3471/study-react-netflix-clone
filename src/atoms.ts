@@ -1,9 +1,13 @@
 import { atom } from "recoil";
 
 export const TRELLO_TODO = "TRELLO_TODO";
+export const TRELLO_ORDER = "TRELLO_ORDER";
 
 const localStorageTodo = localStorage.getItem(TRELLO_TODO) || "{}";
 const parsedLocalToDos = JSON.parse(localStorageTodo);
+
+const localStorageOrder = localStorage.getItem(TRELLO_ORDER) || "[]";
+const parsedLocalOrder = JSON.parse(localStorageOrder);
 
 export interface IToDo {
   id: number;
@@ -19,7 +23,12 @@ export const toDoState = atom<IToDoState>({
   default: parsedLocalToDos,
 });
 
-export const boardMoalState = atom({
+export const boardModalState = atom({
   key: "boardModalState",
   default: false,
+});
+
+export const boardOrderState = atom<string[]>({
+  key: "boardOrder",
+  default: parsedLocalOrder,
 });

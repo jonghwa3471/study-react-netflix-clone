@@ -1,4 +1,15 @@
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+import {
+  boardModalState,
+  boardOrderState,
+  toDoState,
+  TRELLO_ORDER,
+  TRELLO_TODO,
+} from "../atoms";
+import { useSetRecoilState } from "recoil";
+import { useForm } from "react-hook-form";
 
 const Wrapper = styled.div`
   width: 320px;
@@ -33,12 +44,63 @@ const AddBoardForm = styled.form`
   }
 `;
 
+const DeleteButton = styled.div`
+  width: 25px;
+  height: 25px;
+  background-color: #d3d3d3;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.6;
+  }
+  > svg {
+    color: white;
+  }
+`;
+
+interface IForm {
+  boardId: string;
+}
+
 function BoardModal() {
+  const setBoardOrder = useSetRecoilState(boardOrderState);
+  const setModalState = useSetRecoilState(boardModalState);
+  const setToDos = useSetRecoilState(toDoState);
+  const { register, handleSubmit } = useForm<IForm>();
+  const onButtonClick = () => {
+    setModalState((currVal) => !currVal);
+  };
+  const onValid = ({ boardId }: IForm) => {
+    const stringBoardId = String(boardId);
+    setToDos((oldToDos) => {
+      const newTodos = { ...oldToDos, [stringBoardId]: [] };
+      localStorage.setItem(TRELLO_TODO, JSON.stringify(newTodos));
+      return newTodos;
+    });
+    setBoardOrder((oldOrder) => {
+      const orderResult = [...oldOrder, stringBoardId];
+      localStorage.setItem(TRELLO_ORDER, JSON.stringify(orderResult));
+      return orderResult;
+    });
+    setModalState((currVal) => !currVal);
+  };
   return (
     <Wrapper>
       <AddBoardTitle>보드 추가</AddBoardTitle>
-      <AddBoardForm>
-        <input type="text" placeholder="보드를 추가하세요." />
+      <DeleteButton onClick={onButtonClick}>
+        <FontAwesomeIcon icon={faXmark} />
+      </DeleteButton>
+      <AddBoardForm onSubmit={handleSubmit(onValid)}>
+        <input
+          {...register("boardId", { required: true })}
+          placeholder="보드를 추가하세요."
+        />
       </AddBoardForm>
     </Wrapper>
   );

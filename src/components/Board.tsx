@@ -68,13 +68,14 @@ function Board({ toDos, boardId }: IBoardProps) {
       text: toDo,
     };
     setToDos((allBoards) => {
-      return {
+      const result = {
         ...allBoards,
         [boardId]: [...toDos, newToDo],
       };
+      localStorage.setItem(TRELLO_TODO, JSON.stringify(result));
+      return result;
     });
     setValue("toDo", "");
-    localStorage.setItem(TRELLO_TODO, JSON.stringify(toDos));
   };
   return (
     <Wrapper>

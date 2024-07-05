@@ -1,7 +1,12 @@
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { boardMoalState, toDoState } from "./atoms";
+import {
+  boardModalState,
+  boardOrderState,
+  toDoState,
+  TRELLO_TODO,
+} from "./atoms";
 import Board from "./components/Board";
 import AddBoardButton from "./components/AddBoardButton";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -31,8 +36,9 @@ const Boards = styled.div`
 `;
 
 function App() {
+  const boardOrder = useRecoilValue(boardOrderState);
   const [toDos, setToDos] = useRecoilState(toDoState);
-  const boardModalState = useRecoilValue(boardMoalState);
+  const modalState = useRecoilValue(boardModalState);
   const onDragEnd = (info: DropResult) => {
     console.log(info);
     const { destination, source } = info;
@@ -44,10 +50,12 @@ function App() {
         const taskObj = boardCopy[source.index];
         boardCopy.splice(source.index, 1);
         boardCopy.splice(destination?.index, 0, taskObj);
-        return {
+        const dragEndResult = {
           ...allBoards,
           [source.droppableId]: boardCopy,
         };
+        localStorage.setItem(TRELLO_TODO, JSON.stringify(dragEndResult));
+        return dragEndResult;
       });
     }
     if (destination.droppableId !== source.droppableId) {
@@ -58,22 +66,24 @@ function App() {
         const destinationBoard = [...allBoards[destination.droppableId]];
         sourceBoard.splice(source.index, 1);
         destinationBoard.splice(destination.index, 0, taskObj);
-        return {
+        const dragEndResult = {
           ...allBoards,
           [source.droppableId]: sourceBoard,
           [destination.droppableId]: destinationBoard,
         };
+        localStorage.setItem(TRELLO_TODO, JSON.stringify(dragEndResult));
+        return dragEndResult;
       });
     }
   };
   return (
     <>
       <AddBoardButton />
-      {boardModalState ? <BoardModal /> : null}
+      {modalState ? <BoardModal /> : null}
       <DragDropContext onDragEnd={onDragEnd}>
         <Wrapper>
           <Boards>
-            {Object.keys(toDos).map((boardId) => (
+            {boardOrder.map((boardId) => (
               <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
             ))}
           </Boards>
