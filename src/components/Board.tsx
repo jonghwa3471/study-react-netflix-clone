@@ -8,11 +8,12 @@ import { useSetRecoilState } from "recoil";
 const Wrapper = styled.div`
   width: 330px;
   padding: 20px 5px;
-  background-color: ${(props) => props.theme.boardColor};
+  background-color: rgba(245, 245, 245, 0.8);
   border-radius: 5px;
   min-height: 300px;
   display: flex;
   flex-direction: column;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 `;
 
 const Title = styled.h2`
@@ -100,6 +101,8 @@ function Board({ toDos, boardId }: IBoardProps) {
                 key={toDo.id}
                 toDoId={toDo.id}
                 toDoText={toDo.text}
+                boardId={boardId}
+                toDos={toDos}
                 index={index}
               />
             ))}
