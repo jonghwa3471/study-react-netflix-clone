@@ -2,25 +2,33 @@ import { Droppable } from "react-beautiful-dnd";
 import DraggableCard from "./DraggableCard";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { IToDo, TRELLO_TODO, toDoState } from "../atoms";
+import {
+  IToDo,
+  TRELLO_ORDER,
+  TRELLO_TODO,
+  boardOrderState,
+  toDoState,
+} from "../atoms";
 import { useSetRecoilState } from "recoil";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Wrapper = styled.div`
-  width: 330px;
   padding: 20px 5px;
   background-color: rgba(245, 245, 245, 0.8);
   border-radius: 5px;
-  min-height: 300px;
+  min-height: 270px;
   display: flex;
   flex-direction: column;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  position: relative;
 `;
 
 const Title = styled.h2`
   text-align: center;
   font-weight: 600;
   margin-bottom: 10px;
-  font-size: 18px;
+  font-size: 20px;
 `;
 
 interface IAreaProps {
@@ -51,6 +59,26 @@ const Form = styled.form`
     border: none;
   }
 `;
+
+const BoardDeleteButton = styled.div`
+  width: 20px;
+  height: 20px;
+  background-color: #d3d3d3;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  > svg {
+    color: white;
+  }
+  &:hover {
+    cursor: pointer;
+    opacity: 0.6;
+  }
+`;
 interface IBoardProps {
   toDos: IToDo[];
   boardId: string;
@@ -62,6 +90,22 @@ interface IForm {
 
 function Board({ toDos, boardId }: IBoardProps) {
   const setToDos = useSetRecoilState(toDoState);
+  const setBoardOrder = useSetRecoilState(boardOrderState);
+  const deleteBoard = () => {
+    setToDos((oldToDos) => {
+      const copiedToDos = { ...oldToDos };
+      delete copiedToDos[boardId];
+      const result = copiedToDos;
+      localStorage.setItem(TRELLO_TODO, JSON.stringify(result));
+      return result;
+    });
+    setBoardOrder((prev) => {
+      const copiedBoardOrder = [...prev];
+      const result = copiedBoardOrder.filter((id) => id !== boardId);
+      localStorage.setItem(TRELLO_ORDER, JSON.stringify(result));
+      return result;
+    });
+  };
   const { register, setValue, handleSubmit } = useForm<IForm>();
   const onValid = ({ toDo }: IForm) => {
     const newToDo = {
@@ -80,6 +124,9 @@ function Board({ toDos, boardId }: IBoardProps) {
   };
   return (
     <Wrapper>
+      <BoardDeleteButton onClick={deleteBoard}>
+        <FontAwesomeIcon icon={faXmark} />
+      </BoardDeleteButton>
       <Title>{boardId}</Title>
       <Form onSubmit={handleSubmit(onValid)}>
         <input

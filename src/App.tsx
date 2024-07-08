@@ -19,20 +19,21 @@ library.add(fas, fab, far);
 
 const Wrapper = styled.div`
   display: flex;
-  width: 100vw;
+  max-width: 1024px;
+  width: 100%;
+  min-height: 100vh;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  overflow-y: auto;
 `;
 
 const Boards = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  width: 100%;
-  gap: 10px;
+  padding: 20px;
+  display: grid;
   grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  gap: 20px;
 `;
 
 function App() {

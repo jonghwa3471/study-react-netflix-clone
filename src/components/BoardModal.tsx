@@ -8,12 +8,12 @@ import {
   TRELLO_ORDER,
   TRELLO_TODO,
 } from "../atoms";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { useForm } from "react-hook-form";
 
 const Wrapper = styled.div`
   width: 320px;
-  height: 200px;
+  height: 220px;
   padding: 40px;
   background-color: #f5f5f5;
   position: fixed;
@@ -26,6 +26,7 @@ const Wrapper = styled.div`
   gap: 40px;
   border-radius: 5px;
   box-shadow: 1px 5px 30px rgba(0, 0, 0, 0.5);
+  z-index: 1;
 `;
 
 const AddBoardTitle = styled.h2`
@@ -38,7 +39,7 @@ const AddBoardForm = styled.form`
   input {
     width: 100%;
     border-radius: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
     padding: 20px 10px;
     border: none;
   }
@@ -71,12 +72,22 @@ interface IForm {
 function BoardModal() {
   const setBoardOrder = useSetRecoilState(boardOrderState);
   const setModalState = useSetRecoilState(boardModalState);
-  const setToDos = useSetRecoilState(toDoState);
-  const { register, handleSubmit } = useForm<IForm>();
+  const [toDos, setToDos] = useRecoilState(toDoState);
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<IForm>();
   const onButtonClick = () => {
     setModalState((currVal) => !currVal);
   };
   const onValid = ({ boardId }: IForm) => {
+    if (toDos[boardId]) {
+      return setError("boardId", {
+        message: "이미 존재하는 보드입니다.",
+      });
+    }
     const stringBoardId = String(boardId);
     setToDos((oldToDos) => {
       const newTodos = { ...oldToDos, [stringBoardId]: [] };
@@ -90,6 +101,7 @@ function BoardModal() {
     });
     setModalState((currVal) => !currVal);
   };
+
   return (
     <Wrapper>
       <AddBoardTitle>보드 추가</AddBoardTitle>
@@ -100,7 +112,9 @@ function BoardModal() {
         <input
           {...register("boardId", { required: true })}
           placeholder="보드를 추가하세요."
+          autoFocus
         />
+        <span>{errors.boardId?.message}</span>
       </AddBoardForm>
     </Wrapper>
   );
