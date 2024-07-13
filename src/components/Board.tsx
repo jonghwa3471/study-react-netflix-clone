@@ -37,11 +37,11 @@ interface IAreaProps {
 }
 
 const Area = styled.div<IAreaProps>`
-  background-color: ${(props) =>
-    props.$isDraggingOver
-      ? "#2d3436"
-      : props.$isDraggingFromThis
-      ? "#636e72"
+  background-color: ${({ theme, $isDraggingOver, $isDraggingFromThis }) =>
+    $isDraggingOver
+      ? theme.boardBgColor
+      : $isDraggingFromThis
+      ? "rgba(225, 112, 85,0.5)"
       : "transparent"};
   flex-grow: 1;
   transition: background-color 0.3s ease-in-out;

@@ -28,7 +28,17 @@ export const boardModalState = atom({
   default: false,
 });
 
+export const editModalState = atom({
+  key: "editModalState",
+  default: false,
+});
+
 export const boardOrderState = atom<string[]>({
   key: "boardOrder",
   default: parsedLocalOrder,
+});
+
+export const cardState = atom<object>({
+  key: "cardState",
+  default: {},
 });

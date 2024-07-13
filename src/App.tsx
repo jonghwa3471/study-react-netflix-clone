@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {
   boardModalState,
   boardOrderState,
+  editModalState,
   toDoState,
   TRELLO_TODO,
 } from "./atoms";
@@ -14,6 +15,7 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import BoardModal from "./components/BoardModal";
+import EditToDo from "./components/EditToDo";
 
 library.add(fas, fab, far);
 
@@ -40,8 +42,8 @@ function App() {
   const boardOrder = useRecoilValue(boardOrderState);
   const [toDos, setToDos] = useRecoilState(toDoState);
   const modalState = useRecoilValue(boardModalState);
+  const editState = useRecoilValue(editModalState);
   const onDragEnd = (info: DropResult) => {
-    console.log(info);
     const { destination, source } = info;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
@@ -80,6 +82,7 @@ function App() {
   return (
     <>
       <AddBoardButton />
+      {editState ? <EditToDo /> : null}
       {modalState ? <BoardModal /> : null}
       <DragDropContext onDragEnd={onDragEnd}>
         <Wrapper>

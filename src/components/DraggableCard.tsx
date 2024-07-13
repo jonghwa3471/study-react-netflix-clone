@@ -4,7 +4,13 @@ import { memo } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { IToDo, toDoState, TRELLO_TODO } from "../atoms";
+import {
+  cardState,
+  editModalState,
+  IToDo,
+  toDoState,
+  TRELLO_TODO,
+} from "../atoms";
 
 const Card = styled.div<{ $isDragging: boolean }>`
   display: flex;
@@ -15,24 +21,33 @@ const Card = styled.div<{ $isDragging: boolean }>`
   margin-bottom: 10px;
   padding: 15px;
   background-color: ${(props) =>
-    props.$isDragging ? "#6c5ce7" : props.theme.cardColor};
+    props.$isDragging ? "rgba(85, 239, 196, 0.6)" : props.theme.cardColor};
   box-shadow: ${(props) =>
     props.$isDragging ? "0px 2px 5px rgba(0, 0, 0, 0.3)" : "none"};
+  border: 3px solid
+    ${(props) =>
+      props.$isDragging ? "rgba(85, 239, 196, 1)" : props.theme.cardColor};
+  span {
+    color: ${({ $isDragging }) => ($isDragging ? "white" : "darkgray")};
+  }
 `;
 
-const CardBtn = styled.div`
+const CardBtn = styled.div<{ $isDragging: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
   width: 25px;
   height: 25px;
-  background-color: #b1bec2;
   border-radius: 3px;
-  color: white;
+  background-color: ${({ $isDragging }) =>
+    $isDragging ? "white" : "rgba(178, 190, 195,1.0)"};
+  color: ${({ $isDragging }) =>
+    $isDragging ? "rgba(178, 190, 195,1.0)" : "white"};
   font-size: 12px;
-  &:nth-child(2):hover {
+  &:hover {
     cursor: pointer;
+    opacity: 0.7;
   }
 `;
 
@@ -59,7 +74,13 @@ function DraggableCard({
   index,
 }: IDraggableCardProps) {
   const setTodos = useSetRecoilState(toDoState);
-  const onBtnClick = () => {
+  const editState = useSetRecoilState(editModalState);
+  const setCard = useSetRecoilState(cardState);
+  const onEditClick = () => {
+    setCard({ [boardId]: toDoId });
+    editState((currVal) => !currVal);
+  };
+  const onDeleteClick = () => {
     setTodos((oldTodos) => {
       const newToDos = toDos.filter((toDo) => toDoId !== toDo.id);
       const result = {
@@ -81,10 +102,10 @@ function DraggableCard({
         >
           <span>{toDoText}</span>
           <Wrapper>
-            <CardBtn>
+            <CardBtn $isDragging={snapshot.isDragging} onClick={onEditClick}>
               <FontAwesomeIcon icon={faPencil} />
             </CardBtn>
-            <CardBtn onClick={onBtnClick}>
+            <CardBtn $isDragging={snapshot.isDragging} onClick={onDeleteClick}>
               <FontAwesomeIcon icon={faXmark} />
             </CardBtn>
           </Wrapper>
