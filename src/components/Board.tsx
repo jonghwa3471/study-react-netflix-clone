@@ -13,6 +13,8 @@ import { useSetRecoilState } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
+const Container = styled.div``;
+
 const Wrapper = styled.div`
   padding: 20px 5px;
   background-color: rgba(245, 245, 245, 0.8);
@@ -123,41 +125,43 @@ function Board({ toDos, boardId }: IBoardProps) {
     setValue("toDo", "");
   };
   return (
-    <Wrapper>
-      <BoardDeleteButton onClick={deleteBoard}>
-        <FontAwesomeIcon icon={faXmark} />
-      </BoardDeleteButton>
-      <Title>{boardId}</Title>
-      <Form onSubmit={handleSubmit(onValid)}>
-        <input
-          {...register("toDo", { required: true })}
-          type="text"
-          placeholder="할 일을 추가하세요."
-        />
-      </Form>
-      <Droppable droppableId={boardId}>
-        {(provided, snapshot) => (
-          <Area
-            $isDraggingOver={snapshot.isDraggingOver}
-            $isDraggingFromThis={Boolean(snapshot.draggingFromThisWith)}
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-          >
-            {toDos.map((toDo, index) => (
-              <DraggableCard
-                key={toDo.id}
-                toDoId={toDo.id}
-                toDoText={toDo.text}
-                boardId={boardId}
-                toDos={toDos}
-                index={index}
-              />
-            ))}
-            {provided.placeholder}
-          </Area>
-        )}
-      </Droppable>
-    </Wrapper>
+    <Container>
+      <Wrapper>
+        <BoardDeleteButton onClick={deleteBoard}>
+          <FontAwesomeIcon icon={faXmark} />
+        </BoardDeleteButton>
+        <Title>{boardId}</Title>
+        <Form onSubmit={handleSubmit(onValid)}>
+          <input
+            {...register("toDo", { required: true })}
+            type="text"
+            placeholder="할 일을 추가하세요."
+          />
+        </Form>
+        <Droppable droppableId={boardId}>
+          {(provided, snapshot) => (
+            <Area
+              $isDraggingOver={snapshot.isDraggingOver}
+              $isDraggingFromThis={Boolean(snapshot.draggingFromThisWith)}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {toDos.map((toDo, index) => (
+                <DraggableCard
+                  key={toDo.id}
+                  toDoId={toDo.id}
+                  toDoText={toDo.text}
+                  boardId={boardId}
+                  toDos={toDos}
+                  index={index}
+                />
+              ))}
+              {provided.placeholder}
+            </Area>
+          )}
+        </Droppable>
+      </Wrapper>
+    </Container>
   );
 }
 

@@ -16,6 +16,7 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import BoardModal from "./components/BoardModal";
 import EditToDo from "./components/EditToDo";
+import DroppableTrashCan from "./components/DroppableTrashCan";
 
 library.add(fas, fab, far);
 
@@ -36,6 +37,14 @@ const Boards = styled.div`
   grid-template-columns: repeat(3, 1fr);
   width: 100%;
   gap: 20px;
+`;
+
+const TrashCan = styled.div`
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 150px;
+  height: 150px;
 `;
 
 function App() {
@@ -62,21 +71,34 @@ function App() {
       });
     }
     if (destination.droppableId !== source.droppableId) {
-      // cross board movement.
-      setToDos((allBoards) => {
-        const sourceBoard = [...allBoards[source.droppableId]];
-        const taskObj = sourceBoard[source.index];
-        const destinationBoard = [...allBoards[destination.droppableId]];
-        sourceBoard.splice(source.index, 1);
-        destinationBoard.splice(destination.index, 0, taskObj);
-        const dragEndResult = {
-          ...allBoards,
-          [source.droppableId]: sourceBoard,
-          [destination.droppableId]: destinationBoard,
-        };
-        localStorage.setItem(TRELLO_TODO, JSON.stringify(dragEndResult));
-        return dragEndResult;
-      });
+      if (destination.droppableId === "trashCan") {
+        setToDos((allBoards) => {
+          const copiedBoardToDos = [...allBoards[source.droppableId]];
+          copiedBoardToDos.splice(source.index, 1);
+          const result = {
+            ...allBoards,
+            [source.droppableId]: copiedBoardToDos,
+          };
+          localStorage.setItem(TRELLO_TODO, JSON.stringify(result));
+          return result;
+        });
+      } else {
+        // cross board movement.
+        setToDos((allBoards) => {
+          const sourceBoard = [...allBoards[source.droppableId]];
+          const taskObj = sourceBoard[source.index];
+          const destinationBoard = [...allBoards[destination.droppableId]];
+          sourceBoard.splice(source.index, 1);
+          destinationBoard.splice(destination.index, 0, taskObj);
+          const dragEndResult = {
+            ...allBoards,
+            [source.droppableId]: sourceBoard,
+            [destination.droppableId]: destinationBoard,
+          };
+          localStorage.setItem(TRELLO_TODO, JSON.stringify(dragEndResult));
+          return dragEndResult;
+        });
+      }
     }
   };
   return (
@@ -91,6 +113,9 @@ function App() {
               <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
             ))}
           </Boards>
+          <TrashCan>
+            <DroppableTrashCan></DroppableTrashCan>
+          </TrashCan>
         </Wrapper>
       </DragDropContext>
     </>
