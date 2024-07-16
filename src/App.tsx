@@ -17,6 +17,7 @@ import { far } from "@fortawesome/free-regular-svg-icons";
 import BoardModal from "./components/BoardModal";
 import EditToDo from "./components/EditToDo";
 import DroppableTrashCan from "./components/DroppableTrashCan";
+import ClearButton from "./components/ClearButton";
 
 library.add(fas, fab, far);
 
@@ -104,6 +105,7 @@ function App() {
   return (
     <>
       <AddBoardButton />
+      <ClearButton />
       {editState ? <EditToDo /> : null}
       {modalState ? <BoardModal /> : null}
       <DragDropContext onDragEnd={onDragEnd}>

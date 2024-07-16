@@ -39,6 +39,7 @@ function DroppableTrashCan() {
             $draggingFromThisWith={!!snapshot.draggingFromThisWith}
           >
             {snapshot.isDraggingOver ? <FcFullTrash /> : <FcEmptyTrash />}
+            {provided.placeholder}
           </TrashCan>
         )}
       </Droppable>
