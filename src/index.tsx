@@ -65,6 +65,7 @@ table {
   box-sizing: border-box;
 }
 body {
+  background: linear-gradient(135deg, #e09, #d0e);
   font-weight: 300;
   font-family: 'Stylish', sans-serif;
   color: black;
