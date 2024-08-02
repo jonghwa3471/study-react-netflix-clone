@@ -2,7 +2,7 @@ import ReactDOM from "react-dom/client";
 import { RecoilRoot } from "recoil";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import App from "./App";
-import { darkTheme } from "./theme";
+import { theme } from "./theme";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -65,14 +65,10 @@ table {
   box-sizing: border-box;
 }
 body {
-  background: linear-gradient(135deg, #e09, #d0e);
   font-weight: 300;
-  font-family: 'Stylish', sans-serif;
-  color: black;
+  font-family: 'Source Sans Pro', sans-serif;
+  color:black;
   line-height: 1.2;
-  input:focus {
-    outline: none;
-  }
 }
 a {
   text-decoration: none;
@@ -82,7 +78,7 @@ a {
 
 root.render(
   <RecoilRoot>
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={theme}>
       <GlobalStyle />
       <App />
     </ThemeProvider>
