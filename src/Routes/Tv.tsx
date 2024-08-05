@@ -1,7 +1,5 @@
 function Tv() {
-  return (
-    <div style={{ backgroundColor: "whitesmoke", height: "200vh" }}>TV</div>
-  );
+  return <div style={{ backgroundColor: "whitesmoke" }}>TV</div>;
 }
 
 export default Tv;
