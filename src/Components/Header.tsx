@@ -139,7 +139,12 @@ function Header() {
     });
   }, [scrollY, navAnimation]);
   return (
-    <Nav variants={navVariants} animate={navAnimation} initial="top">
+    <Nav
+      variants={navVariants}
+      animate={navAnimation}
+      initial="top"
+      transition={{ type: "tween" }}
+    >
       <Col>
         <Logo
           variants={logoVariants}
