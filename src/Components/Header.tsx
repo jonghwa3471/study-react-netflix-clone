@@ -14,6 +14,7 @@ const Nav = styled(motion.nav)`
   font-size: 14px;
   padding: 20px 60px;
   color: white;
+  z-index: 5;
 `;
 
 const Col = styled.div`
@@ -147,6 +148,7 @@ function Header() {
   const { register, handleSubmit } = useForm<IForm>();
   const onValid = ({ keyword }: IForm) => {
     history.push(`/search?keyword=${keyword}`);
+    window.location.reload();
   };
   return (
     <Nav
@@ -205,6 +207,7 @@ function Header() {
             initial={{ scaleX: 0 }}
             transition={{ type: "linear" }}
             placeholder="Search for movies"
+            minLength={2}
           />
         </Search>
       </Col>
