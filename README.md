@@ -5,7 +5,7 @@ Netflix Clone with ReactJS
 https://jonghwa3471.github.io/study-react-netflix-clone/#/
 
 ## 🖥 Preview
-<img src="preview-movie-app-2019.png"/>
+<img src="preview-netflix.png"/>
 
 ## 🔥 Stack
 
