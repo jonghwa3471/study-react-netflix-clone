@@ -172,16 +172,12 @@ function Header() {
         <Items>
           <Item>
             <Link to="/">
-              Home{" "}
-              {homeMatch?.isExact && (
-                <Circle layoutId="circle" layoutScroll={false} />
-              )}
+              Home {homeMatch?.isExact && <Circle layoutId="circle" />}
             </Link>
           </Item>
           <Item>
             <Link to="/tv">
-              TV Shows{" "}
-              {tvMatch && <Circle layoutId="circle" layoutScroll={false} />}
+              TV Shows {tvMatch && <Circle layoutId="circle" />}
             </Link>
           </Item>
         </Items>
