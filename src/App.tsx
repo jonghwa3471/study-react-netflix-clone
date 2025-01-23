@@ -3,13 +3,11 @@ import Home from "./Routes/Home";
 import Tv from "./Routes/Tv";
 import Search from "./Routes/Search";
 import Header from "./Components/Header";
-import ScrollToTop from "./ScrollToTop";
 
 function App() {
   return (
     <Router>
       <Header />
-      <ScrollToTop />
       <Switch>
         <Route path={["/tv", "/tv/:tvId"]}>
           <Tv />
