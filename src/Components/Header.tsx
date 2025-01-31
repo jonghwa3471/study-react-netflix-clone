@@ -172,7 +172,7 @@ function Header() {
         <Items>
           <Item>
             <Link to="/">
-              Home{" "}
+              Home
               {homeMatch?.isExact && (
                 <Circle layoutId="circle" style={{ originY: "0px" }} />
               )}
@@ -180,7 +180,7 @@ function Header() {
           </Item>
           <Item>
             <Link to="/tv">
-              TV Shows{" "}
+              TV Shows
               {tvMatch && (
                 <Circle layoutId="circle" style={{ originY: "0px" }} />
               )}
