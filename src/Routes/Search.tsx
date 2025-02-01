@@ -281,7 +281,7 @@ function Search() {
                     offset * searchMovieIndex,
                     offset * searchMovieIndex + offset
                   )
-                  .map((movie: IMovie) => (
+                  .map((movie: IMovie, index, array) => (
                     <Box
                       layoutId={`movies_${movie.id}`}
                       key={movie.id}
@@ -294,6 +294,14 @@ function Search() {
                         movie.backdrop_path || movie.poster_path,
                         "w500"
                       )}
+                      style={{
+                        originX:
+                          index === 0
+                            ? 0
+                            : index === array.length - 1
+                            ? 1
+                            : 0.5,
+                      }}
                     >
                       <Info variants={infoVariants}>
                         <h4>{movie.title}</h4>
@@ -325,7 +333,7 @@ function Search() {
                     offset * searchTvIndex,
                     offset * searchTvIndex + offset
                   )
-                  .map((tv: ITv) => (
+                  .map((tv: ITv, index, array) => (
                     <Box
                       layoutId={`tv_${tv.id}`}
                       key={tv.id}
@@ -338,6 +346,14 @@ function Search() {
                         tv.backdrop_path || tv.poster_path,
                         "w500"
                       )}
+                      style={{
+                        originX:
+                          index === 0
+                            ? 0
+                            : index === array.length - 1
+                            ? 1
+                            : 0.5,
+                      }}
                     >
                       <Info variants={infoVariants}>
                         <h4>{tv.name}</h4>

@@ -315,7 +315,7 @@ function Tv() {
                     offset * trendingIndex,
                     offset * trendingIndex + offset
                   )
-                  .map((tv: ITv) => (
+                  .map((tv: ITv, index, array) => (
                     <Box
                       layoutId={`trending_${tv.id}`}
                       key={tv.id}
@@ -328,6 +328,14 @@ function Tv() {
                         tv.backdrop_path || tv.poster_path,
                         "w500"
                       )}
+                      style={{
+                        originX:
+                          index === 0
+                            ? 0
+                            : index === array.length - 1
+                            ? 1
+                            : 0.5,
+                      }}
                     >
                       <Info variants={infoVariants}>
                         <h4>{tv.name}</h4>
@@ -359,7 +367,7 @@ function Tv() {
                     offset * airingTodayIndex,
                     offset * airingTodayIndex + offset
                   )
-                  .map((tv: ITv) => (
+                  .map((tv: ITv, index, array) => (
                     <Box
                       layoutId={`airingToday_${tv.id}`}
                       key={tv.id}
@@ -372,6 +380,14 @@ function Tv() {
                         tv.backdrop_path || tv.poster_path,
                         "w500"
                       )}
+                      style={{
+                        originX:
+                          index === 0
+                            ? 0
+                            : index === array.length - 1
+                            ? 1
+                            : 0.5,
+                      }}
                     >
                       <Info variants={infoVariants}>
                         <h4>{tv.name}</h4>
@@ -400,7 +416,7 @@ function Tv() {
                 {popularData?.results
                   .slice(1)
                   .slice(offset * popularIndex, offset * popularIndex + offset)
-                  .map((tv: ITv) => (
+                  .map((tv: ITv, index, array) => (
                     <Box
                       layoutId={`popular_${tv.id}`}
                       key={tv.id}
@@ -413,6 +429,14 @@ function Tv() {
                         tv.backdrop_path || tv.poster_path,
                         "w500"
                       )}
+                      style={{
+                        originX:
+                          index === 0
+                            ? 0
+                            : index === array.length - 1
+                            ? 1
+                            : 0.5,
+                      }}
                     >
                       <Info variants={infoVariants}>
                         <h4>{tv.name}</h4>
@@ -444,7 +468,7 @@ function Tv() {
                     offset * topRatedIndex,
                     offset * topRatedIndex + offset
                   )
-                  .map((tv: ITv) => (
+                  .map((tv: ITv, index, array) => (
                     <Box
                       layoutId={`topRated_${tv.id}`}
                       key={tv.id}
@@ -457,6 +481,14 @@ function Tv() {
                         tv.backdrop_path || tv.poster_path,
                         "w500"
                       )}
+                      style={{
+                        originX:
+                          index === 0
+                            ? 0
+                            : index === array.length - 1
+                            ? 1
+                            : 0.5,
+                      }}
                     >
                       <Info variants={infoVariants}>
                         <h4>{tv.name}</h4>

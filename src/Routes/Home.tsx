@@ -304,7 +304,7 @@ function Home() {
                 {latestData?.results
                   .slice(1)
                   .slice(offset * latestIndex, offset * latestIndex + offset)
-                  .map((movie: IMovie) => (
+                  .map((movie: IMovie, index: number, array: Array<IMovie>) => (
                     <Box
                       layoutId={`nowPlaying_${movie.id}`}
                       key={movie.id}
@@ -317,6 +317,14 @@ function Home() {
                         movie.backdrop_path || movie.poster_path,
                         "w500"
                       )}
+                      style={{
+                        originX:
+                          index === 0
+                            ? 0
+                            : index === array.length - 1
+                            ? 1
+                            : 0.5,
+                      }}
                     >
                       <Info variants={infoVariants}>
                         <h4>{movie.title}</h4>
@@ -348,7 +356,7 @@ function Home() {
                     offset * topRatedIndex,
                     offset * topRatedIndex + offset
                   )
-                  .map((movie: IMovie) => (
+                  .map((movie: IMovie, index: number, array: Array<IMovie>) => (
                     <Box
                       layoutId={`topRated_${movie.id}`}
                       key={movie.id}
@@ -361,6 +369,14 @@ function Home() {
                         movie.backdrop_path || movie.poster_path,
                         "w500"
                       )}
+                      style={{
+                        originX:
+                          index === 0
+                            ? 0
+                            : index === array.length - 1
+                            ? 1
+                            : 0.5,
+                      }}
                     >
                       <Info variants={infoVariants}>
                         <h4>{movie.title}</h4>
@@ -392,7 +408,7 @@ function Home() {
                     offset * upComingIndex,
                     offset * upComingIndex + offset
                   )
-                  .map((movie: IMovie) => (
+                  .map((movie: IMovie, index: number, array: Array<IMovie>) => (
                     <Box
                       layoutId={`upComing_${movie.id}`}
                       key={movie.id}
@@ -405,6 +421,14 @@ function Home() {
                         movie.backdrop_path || movie.poster_path,
                         "w500"
                       )}
+                      style={{
+                        originX:
+                          index === 0
+                            ? 0
+                            : index === array.length - 1
+                            ? 1
+                            : 0.5,
+                      }}
                     >
                       <Info variants={infoVariants}>
                         <h4>{movie.title}</h4>
